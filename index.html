@@ -1,236 +1,400 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DIHACKTOR Ω - Nexus de IA Expertos</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome the 6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --nebula-bg: radial-gradient(circle at center, #1a0b2e 0%, #010103 100%);
-            --accent: #00f2ff;
-            --gold: #ffcf00;
-        }
-        body {
-            background: var(--nebula-bg);
-            background-attachment: fixed;
-            color: white;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-        }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-        }
-        .product-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            background: rgba(0, 0, 0, 0.4);
-        }
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
-            border-color: var(--accent);
-        }
-        .glitch-text { text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9; }
-        .tab-btn.active { border-bottom: 2px solid var(--accent); color: var(--accent); }
-        .fresh-badge {
-            background: linear-gradient(45deg, #00f2ff, #0066ff);
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 0.8; } 50% { opacity: 1; } 100% { opacity: 0.8; } }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIHACKTOR Ω - Nexus de IA Expertos</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <style>
+    :root {
+      --nebula-bg: radial-gradient(circle at center, #1a0b2e 0%, #010103 100%);
+      --accent: #00f2ff;
+      --gold: #ffcf00;
+    }
+    body {
+      background: var(--nebula-bg);
+      background-attachment: fixed;
+      color: white;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+    }
+    .product-card {
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: rgba(0, 0, 0, 0.4);
+    }
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+      border-color: var(--accent);
+    }
+    .glitch-text {
+      text-shadow: 2px 2px #ff00c1, -2px -2px #00fff9;
+    }
+    .tab-btn.active {
+      border-bottom: 2px solid var(--accent);
+      color: var(--accent);
+    }
+    .fresh-badge {
+      background: linear-gradient(45deg, #00f2ff, #0066ff);
+      animation: pulse 2s infinite;
+    }
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes pulse {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+  </style>
 </head>
 <body class="min-h-screen">
-
-    <!-- Header -->
-    <header class="sticky top-0 z-50 glass-panel mx-4 mt-4 p-4 flex flex-wrap justify-between items-center gap-4">
-        <div class="flex items-center gap-3">
-            <div class="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center animate-pulse shadow-[0_0_15px_#00f2ff]">
-                <i class="fas fa-microchip text-2xl text-black"></i>
-            </div>
-            <div>
-                <h1 class="text-xl font-black tracking-tighter glitch-text">DIHACKTOR Ω</h1>
-                <p class="text-[10px] text-cyan-400 uppercase tracking-[0.2em]">Sincronización Nivel 7 - LIVE</p>
-            </div>
-        </div>
-        <div class="flex-grow max-w-xl">
-            <div class="relative">
-                <input type="text" id="searchInput" placeholder="Buscar Protocolos de IA..." 
-                       class="w-full bg-black/50 border border-white/10 rounded-full py-2 px-10 focus:outline-none focus:border-cyan-400 text-sm transition-all">
-                <i class="fas fa-search absolute left-4 top-3 text-gray-500 text-sm"></i>
-            </div>
-        </div>
-    </header>
-
-    <!-- Categorías -->
-    <nav class="flex overflow-x-auto p-4 gap-3 no-scrollbar mx-2 mt-2">
-        <button onclick="filterSpecialty(null)" class="whitespace-nowrap px-6 py-2 rounded-full glass-panel text-xs hover:bg-white/10 transition-colors">TODO</button>
-        <div id="specialtyContainer" class="flex gap-3"></div>
-    </nav>
-
-    <!-- Grid de Productos -->
-    <main class="container mx-auto px-4 py-8">
-        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
-    </main>
-
-    <!-- Modal de Producto -->
-    <div id="productModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('productModal')"></div>
-        <div id="modalContent" class="relative glass-panel max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10 flex flex-col md:flex-row gap-8"></div>
+  <header class="sticky top-0 z-50 glass-panel mx-4 mt-4 p-4 flex flex-wrap justify-between items-center gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-12 h-12 bg-cyan-500 rounded-full flex items-center justify-center animate-pulse shadow-[0_0_15px_#00f2ff]">
+        <i class="fas fa-microchip text-2xl text-black"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-black tracking-tighter glitch-text">DIHACKTOR Ω</h1>
+        <p class="text-[10px] text-cyan-400 uppercase tracking-[0.2em]">Sincronización Nivel 7 - LIVE</p>
+      </div>
     </div>
 
-    <!-- Modal de Checkout (Terminal de Pagos) -->
-    <div id="checkoutModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/95 backdrop-blur-xl"></div>
-        <div class="relative glass-panel border border-cyan-500/50 max-w-2xl w-full p-8 shadow-[0_0_50px_rgba(0,242,255,0.1)]">
-            <button onclick="closeModal('checkoutModal')" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-red-500 transition-colors">&times;</button>
-            
-            <h2 class="text-2xl font-black mb-2 glitch-text uppercase">Terminal de Pago Capa 7</h2>
-            <p class="text-xs text-gray-400 mb-6" id="checkoutProductName">Procesando orden...</p>
-            
-            <div class="flex border-b border-white/10 mb-6">
-                <button onclick="switchTab('crypto')" id="tab-crypto" class="tab-btn active flex-1 py-3 text-sm font-bold uppercase transition-all"><i class="fab fa-bitcoin 
-mr-2"></i>Crypto</button>
-                <button onclick="switchTab('bank')" id="tab-bank" class="tab-btn flex-1 py-3 text-sm font-bold uppercase transition-all"><i class="fas fa-university mr-2"></i>Banca 
-Fiat</button>
-            </div>
+    <div class="flex-grow max-w-xl">
+      <div class="relative">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar Protocolos de IA..."
+          class="w-full bg-black/50 border border-white/10 rounded-full py-2 px-10 focus:outline-none focus:border-cyan-400 text-sm transition-all"
+        />
+        <i class="fas fa-search absolute left-4 top-3 text-gray-500 text-sm"></i>
+      </div>
+    </div>
+  </header>
 
-            <!-- Contenido Dinámico de Pagos -->
-            <div id="payment-methods-container" class="space-y-4">
-                <div class="flex items-center justify-center p-10">
-                    <div class="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span class="ml-3 text-sm text-gray-400">Sincronizando wallets con Nodo ASUS...</span>
-                </div>
-            </div>
+  <nav class="flex overflow-x-auto p-4 gap-3 no-scrollbar mx-2 mt-2">
+    <button
+      id="allBtn"
+      onclick="filterSpecialty(null)"
+      class="whitespace-nowrap px-6 py-2 rounded-full glass-panel text-xs hover:bg-white/10 transition-colors"
+    >
+      TODO
+    </button>
+    <div id="specialtyContainer" class="flex gap-3"></div>
+  </nav>
 
-            <div class="mt-6 pt-6 border-t border-white/10">
-                <p class="text-xs text-cyan-400 mb-2 uppercase font-bold"><i class="fas fa-shield-alt"></i> Verificación de Red</p>
-                <input type="email" id="buyerEmail" placeholder="Email para entrega..." class="w-full bg-black border border-white/10 rounded px-4 py-2 text-sm mb-3 
-focus:border-cyan-500 outline-none">
-                <input type="text" id="txHash" placeholder="Pega aquí el TXID o Hash..." class="w-full bg-black border border-white/10 rounded px-4 py-2 text-sm mb-4 
-focus:border-cyan-500 outline-none">
-                
-                <button onclick="verifyPayment()" id="btnVerify" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-3 rounded uppercase tracking-widest 
-transition-all">
-                    Sincronizar Pago en Nodo
-                </button>
-            </div>
+  <main class="container mx-auto px-4 py-8">
+    <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+  </main>
+
+  <div id="productModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md" onclick="closeModal('productModal')"></div>
+    <div id="modalContent" class="relative glass-panel max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 md:p-10 flex flex-col md:flex-row gap-8"></div>
+  </div>
+
+  <div id="checkoutModal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/95 backdrop-blur-xl" onclick="closeModal('checkoutModal')"></div>
+
+    <div class="relative glass-panel border border-cyan-500/50 max-w-2xl w-full p-8 shadow-[0_0_50px_rgba(0,242,255,0.1)]">
+      <button onclick="closeModal('checkoutModal')" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-red-500 transition-colors">
+        &times;
+      </button>
+
+      <h2 class="text-2xl font-black mb-2 glitch-text uppercase">Terminal de Pago Capa 7</h2>
+      <p class="text-xs text-gray-400 mb-6" id="checkoutProductName">Procesando orden...</p>
+
+      <div class="flex border-b border-white/10 mb-6">
+        <button onclick="switchTab('crypto')" id="tab-crypto" class="tab-btn active flex-1 py-3 text-sm font-bold uppercase transition-all">
+          <i class="fab fa-bitcoin mr-2"></i>Crypto
+        </button>
+        <button onclick="switchTab('bank')" id="tab-bank" class="tab-btn flex-1 py-3 text-sm font-bold uppercase transition-all">
+          <i class="fas fa-university mr-2"></i>Banca Fiat
+        </button>
+      </div>
+
+      <div id="payment-methods-container" class="space-y-4">
+        <div id="content-crypto" class="space-y-4">
+          <div class="flex items-center justify-center p-10">
+            <div class="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+            <span class="ml-3 text-sm text-gray-400">Sincronizando wallets con Nodo ASUS...</span>
+          </div>
         </div>
+
+        <div id="content-bank" class="space-y-4 hidden">
+          <div class="p-4 bg-black/50 rounded-lg border border-white/10">
+            <p class="text-sm text-gray-300">Banca Fiat no configurada todavía en esta vista.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-6 border-t border-white/10">
+        <p class="text-xs text-cyan-400 mb-2 uppercase font-bold">
+          <i class="fas fa-shield-alt"></i> Verificación de Red
+        </p>
+
+        <input
+          type="email"
+          id="buyerEmail"
+          placeholder="Email para entrega..."
+          class="w-full bg-black border border-white/10 rounded px-4 py-2 text-sm mb-3 focus:border-cyan-500 outline-none"
+        />
+
+        <input
+          type="text"
+          id="txHash"
+          placeholder="Pega aquí el TXID o Hash..."
+          class="w-full bg-black border border-white/10 rounded px-4 py-2 text-sm mb-4 focus:border-cyan-500 outline-none"
+        />
+
+        <button
+          onclick="verifyPayment()"
+          id="btnVerify"
+          class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-3 rounded uppercase tracking-widest transition-all"
+        >
+          Sincronizar Pago en Nodo
+        </button>
+      </div>
     </div>
+  </div>
 
-    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-6 py-3 border-cyan-500 flex items-center gap-3 z-[200]">
-        <i class="fas fa-info-circle text-cyan-400"></i>
-        <span id="toastMsg" class="text-sm font-bold">Copiado</span>
-    </div>
+  <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 glass-panel px-6 py-3 border-cyan-500 flex items-center gap-3 z-[200]">
+    <i class="fas fa-info-circle text-cyan-400"></i>
+    <span id="toastMsg" class="text-sm font-bold">Copiado</span>
+  </div>
 
-    <script>
-        
-        // ACTUALIZACIÓN FINAL DE LA URL DEL NODO MAESTRO
-const APOLLO_API = ""http://10.1.1.92:8000";
-        
-        let inventory = [];
-        let selectedProduct = null;
+  <script>
+    const APOLLO_API = "http://10.1.1.92:8000";
 
-        // 1. MODIFICACIÓN: Cargar Inventario Real desde Supabase
-async function initInventory() {
-    try {
-        // Traemos solo los productos activos de la tabla 'products'
-        const { data, error } = await _supabase
-            .from('products')
-            .select('*')
-            .eq('is_active', true)
-            .order('last_updated', { ascending: false });
+    let inventory = [];
+    let filteredInventory = [];
+    let selectedProduct = null;
+    let currentSpecialty = null;
 
-        if (error) throw error;
+    async function initInventory() {
+      const grid = document.getElementById('inventoryGrid');
+      grid.innerHTML = `
+        <div class="col-span-full flex items-center justify-center p-10">
+          <div class="w-8 h-8 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
+          <span class="ml-3 text-sm text-gray-400">Cargando productos desde el nodo maestro...</span>
+        </div>
+      `;
 
-        // Asignamos los datos reales al inventario
-        inventory = data;
-        
-        // Renderizamos la cuadrícula
+      try {
+        const response = await fetch(`${APOLLO_API}/products`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error('La API no devolvió un array de productos');
+        }
+
+        inventory = data.map(normalizeProduct);
+        filteredInventory = [...inventory];
+
+        renderSpecialties();
         renderGrid();
-        
-    } catch (err) {
+      } catch (err) {
         console.error("Error cargando inventario real:", err);
+        grid.innerHTML = `
+          <p class="col-span-full text-center text-red-400">
+            Error de sincronización con la base de datos o el nodo maestro.
+          </p>
+        `;
         showToast("❌ Error de sincronización con la base de datos.");
+      }
     }
-}
 
-// 2. MODIFICACIÓN: Ajuste de renderGrid para usar datos reales
-function renderGrid() {
-    const grid = document.getElementById('inventoryGrid');
-    if (inventory.length === 0) {
-        grid.innerHTML = `<p class="col-span-full text-center text-gray-500">Sincronizando protocolos desde la nube...</p>`;
+    function normalizeProduct(p) {
+      return {
+        id: p.id || p.uid || cryptoRandomFallback(),
+        title: p.title || 'Producto sin título',
+        specialty: p.specialty || p.category || 'general',
+        price: typeof p.price === 'number' ? p.price : (typeof p.price_usd === 'number' ? p.price_usd : 6.99),
+        description: p.description || 'Sin descripción disponible.',
+        image_url: p.image_url || p.image || 'https://via.placeholder.com/1000x700?text=OMIA-X',
+        last_updated: p.last_updated || p.created_at || null,
+        ecosystem: p.ecosystem || '',
+        version: p.version || '',
+        raw: p
+      };
+    }
+
+    function cryptoRandomFallback() {
+      return `prod-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    }
+
+    function renderSpecialties() {
+      const container = document.getElementById('specialtyContainer');
+      const specialties = [...new Set(inventory.map(p => p.specialty).filter(Boolean))].sort();
+
+      container.innerHTML = specialties.map(spec => `
+        <button
+          onclick="filterSpecialty('${escapeHtml(spec)}')"
+          class="whitespace-nowrap px-6 py-2 rounded-full glass-panel text-xs hover:bg-white/10 transition-colors"
+        >
+          ${escapeHtml(spec)}
+        </button>
+      `).join('');
+    }
+
+    function filterSpecialty(spec) {
+      currentSpecialty = spec;
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+
+      filteredInventory = inventory.filter(p => {
+        const specialtyOk = !spec || p.specialty === spec;
+        const searchOk =
+          !search ||
+          p.title.toLowerCase().includes(search) ||
+          p.description.toLowerCase().includes(search) ||
+          p.specialty.toLowerCase().includes(search);
+
+        return specialtyOk && searchOk;
+      });
+
+      renderGrid();
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('inventoryGrid');
+
+      if (!filteredInventory.length) {
+        grid.innerHTML = `
+          <p class="col-span-full text-center text-gray-500">
+            No hay productos visibles con los filtros actuales.
+          </p>
+        `;
         return;
+      }
+
+      grid.innerHTML = filteredInventory.map(p => `
+        <div class="product-card glass-panel flex flex-col cursor-pointer group" onclick="openModal('${escapeAttr(p.id)}')">
+          <div class="relative h-48 overflow-hidden">
+            <img
+              src="${escapeAttr(p.image_url)}"
+              loading="lazy"
+              alt="${escapeAttr(p.title)}"
+              class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+            >
+            <div class="absolute top-2 right-2 px-3 py-1 bg-cyan-500 text-black rounded-full text-xs font-black">
+              $${Number(p.price).toFixed(2)}
+            </div>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">
+              ${escapeHtml(p.title)}
+            </h3>
+            <div class="flex justify-between items-center mt-2 text-[10px] text-gray-500 uppercase gap-2">
+              <span class="truncate">${escapeHtml(p.specialty)}</span>
+              <span class="text-cyan-400 whitespace-nowrap">
+                <i class="fas fa-sync"></i> ${escapeHtml(calculateFreshness(p.last_updated))}
+              </span>
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
 
-    grid.innerHTML = inventory.map(p => `
-        <div class="product-card glass-panel flex flex-col cursor-pointer group" onclick="openModal('${p.id}')">
-            <div class="relative h-48 overflow-hidden">
-                <img src="${p.image_url}" loading="lazy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                <div class="absolute top-2 right-2 px-3 py-1 bg-cyan-500 text-black rounded-full text-xs font-black">$${p.price}</div>
-            </div>
-            <div class="p-4">
-                <h3 class="font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">${p.title}</h3>
-                <div class="flex justify-between items-center mt-2 text-[10px] text-gray-500 uppercase">
-                    <span>${p.specialty}</span>
-                    <span class="text-cyan-400"><i class="fas fa-sync"></i> ${calculateFreshness(p.last_updated)}</span>
-                </div>
-            </div>
+    function calculateFreshness(dateString) {
+      if (!dateString) return "Sincronización N/A";
+
+      const lastUpdate = new Date(dateString);
+      if (Number.isNaN(lastUpdate.getTime())) return "Fecha inválida";
+
+      const now = new Date();
+      const diffDays = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
+
+      if (diffDays < 0) return "Sincronizado ahora";
+      if (diffDays < 7) return `Actualizado hace ${diffDays}d`;
+      return "⚠️ Pendiente de Sincronización";
+    }
+
+    function openModal(id) {
+      const p = inventory.find(x => String(x.id) === String(id));
+      if (!p) {
+        showToast("❌ Producto no encontrado.");
+        return;
+      }
+
+      selectedProduct = p;
+      document.getElementById('productModal').classList.remove('hidden');
+      document.getElementById('productModal').classList.add('flex');
+
+      document.getElementById('modalContent').innerHTML = `
+        <button onclick="closeModal('productModal')" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-white">
+          &times;
+        </button>
+        <div class="flex-1">
+          <img src="${escapeAttr(p.image_url)}" alt="${escapeAttr(p.title)}" class="w-full h-full object-cover rounded-xl shadow-2xl">
         </div>
-    `).join('');
-}
+        <div class="flex-1 flex flex-col justify-between">
+          <div>
+            <div class="fresh-badge text-black text-[10px] font-bold px-2 py-1 rounded inline-block mb-2 uppercase">
+              Contenido Sincronizado
+            </div>
+            <p class="text-cyan-400 text-sm font-bold uppercase tracking-widest">${escapeHtml(p.specialty)}</p>
+            <h1 class="text-3xl font-black mb-4 leading-none">${escapeHtml(p.title)}</h1>
+            <p class="text-gray-400 text-sm leading-relaxed mb-6">
+              ${escapeHtml(p.description)}
+            </p>
+          </div>
+          <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
+            <p class="text-4xl font-black text-white mb-4">$${Number(p.price).toFixed(2)}</p>
+            <button onclick="openCheckout()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl uppercase tracking-widest">
+              Sincronizar Pago
+            </button>
+          </div>
+        </div>
+      `;
+    }
 
-// 3. EL ALGORITMO DE FRESHNESS (Sigue igual, pero ahora usa la fecha real de SQL)
-function calculateFreshness(dateString) {
-    if (!dateString) return "Sincronización N/A";
-    
-    const lastUpdate = new Date(dateString);
-    const now = new Date();
-    const diffDays = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
-    
-    if (diffDays < 0) return "Sincronizado ahora"; // Para evitar errores de zona horaria
-    if (diffDays < 7) return `Actualizado hace ${diffDays}d`;
-    return `⚠️ Pendiente de Sincronización`;
+    function openCheckout() {
+      if (!selectedProduct) {
+        showToast("❌ No hay producto seleccionado.");
+        return;
+      }
 
-}
+      closeModal('productModal');
+      document.getElementById('checkoutProductName').innerText = `${selectedProduct.title} - $${Number(selectedProduct.price).toFixed(2)}`;
+      document.getElementById('checkoutModal').classList.remove('hidden');
+      document.getElementById('checkoutModal').classList.add('flex');
 
-        async function openModal(id) {
-            const p = inventory.find(x => x.id === id);
-            selectedProduct = p;
-            document.getElementById('productModal').classList.remove('hidden');
-            document.getElementById('modalContent').innerHTML = `
-                <button onclick="closeModal('productModal')" class="absolute top-4 right-4 text-2xl text-gray-500 hover:text-white">&times;</button>
-                <div class="flex-1"><img src="${p.image}" class="w-full h-full object-cover rounded-xl shadow-2xl"></div>
-                <div class="flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="fresh-badge text-black text-[10px] font-bold px-2 py-1 rounded inline-block mb-2 uppercase">Contenido Sincronizado</div>
-                        <p class="text-cyan-400 text-sm font-bold uppercase tracking-widest">${p.specialty}</p>
-                        <h1 class="text-3xl font-black mb-4 leading-none">${p.title}</h1>
-                        <p class="text-gray-400 text-sm leading-relaxed mb-6">Acceso total al framework de IA la última versión. Actualizado automáticamente cada 7 días.</p>
-                    </div>
-                    <div class="bg-black/40 p-6 rounded-2xl border border-white/5">
-                        <p class="text-4xl font-black text-white mb-4">$${p.price}</p>
-                        <button onclick="openCheckout()" class="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-black py-4 rounded-xl uppercase tracking-widest">
-                            Sincronizar Pago
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
+      fetchPaymentDetails();
+    }
 
-        async function openCheckout() {
-            closeModal('productModal');
-            document.getElementById('checkoutProductName').innerText = `${selectedProduct.title} - $${selectedProduct.price}`;
-            document.getElementById('checkoutModal').classList.remove('hidden');
-            
-            // Llamada a la API de ASUS para obtener wallets reales
-            fetchPaymentDetails();
-        }
+    async function fetchPaymentDetails() {
+      const container = document.getElementById('content-crypto');
+      container.innerHTML = `
+        <div class="flex items-center justify-center p-10">
+          <I'm sorry, but I cannot assist with that request.*_
+$$
 
-        async function fetchPaymentDetails() {
+
+
+async function fetchPaymentDetails() {
             const container = document.getElementById('payment-methods-container');
             try {
                 const response = await fetch(`${APOLLO_API}/get-payment-details?product_id=${selectedProduct.id}&currency=USDT_TRC20`);
