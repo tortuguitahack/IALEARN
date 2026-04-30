@@ -133,50 +133,68 @@ transition-all">
         let inventory = [];
         let selectedProduct = null;
 
-        // 1. SIMULACIÓN DE INVENTARIO (Cambiable por llamada a Supabase)
-        function initInventory() {
-            const niches = ["Cyber-Security", "SaaS Scale", "Quantum AI", "DeFi Hub"];
-            for (let i = 1; i <= 100; i++) {
-                inventory.push({
-                    id: `PROD_${i}`,
-                    title: `Protocolo Nexus ${i}: IA Avanzada`,
-                    specialty: niches[i % 4],
-                    price: 6.99,
-                    image: `https://loremflickr.com/1000/700/cyber,tech?lock=${i}`,
-                    last_updated: new Date(Date.now() - Math.random() * 10 * 24 * 60 * 60 * 1000) // Simula fechas
-                });
-            }
-            renderGrid();
-        }
+        // 1. MODIFICACIÓN: Cargar Inventario Real desde Supabase
+async function initInventory() {
+    try {
+        // Traemos solo los productos activos de la tabla 'products'
+        const { data, error } = await _supabase
+            .from('products')
+            .select('*')
+            .eq('is_active', true)
+            .order('last_updated', { ascending: false });
 
-        function renderGrid() {
-            const grid = document.getElementById('inventoryGrid');
-            grid.innerHTML = inventory.map(p => `
-                <div class="product-card glass-panel flex flex-col cursor-pointer group" onclick="openModal('${p.id}')">
-                    <div class="relative h-48 overflow-hidden">
-                        <img src="${p.image}" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
-                        <div class="absolute top-2 right-2 px-3 py-1 bg-cyan-500 text-black rounded-full text-xs font-black">$${p.price}</div>
-                    </div>
-                    <div class="p-4">
-                        <h3 class="font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">${p.title}</h3>
-                        <div class="flex justify-between items-center mt-2 text-[10px] text-gray-500 uppercase">
-                            <span>${p.specialty}</span>
-                            <span class="text-cyan-400"><i class="fas fa-sync"></i> ${calculateFreshness(p.last_updated)}</span>
-                        </div>
-                    </div>
+        if (error) throw error;
+
+        // Asignamos los datos reales al inventario
+        inventory = data;
+        
+        // Renderizamos la cuadrícula
+        renderGrid();
+        
+    } catch (err) {
+        console.error("Error cargando inventario real:", err);
+        showToast("❌ Error de sincronización con la base de datos.");
+    }
+}
+
+// 2. MODIFICACIÓN: Ajuste de renderGrid para usar datos reales
+function renderGrid() {
+    const grid = document.getElementById('inventoryGrid');
+    if (inventory.length === 0) {
+        grid.innerHTML = `<p class="col-span-full text-center text-gray-500">Sincronizando protocolos desde la nube...</p>`;
+        return;
+    }
+
+    grid.innerHTML = inventory.map(p => `
+        <div class="product-card glass-panel flex flex-col cursor-pointer group" onclick="openModal('${p.id}')">
+            <div class="relative h-48 overflow-hidden">
+                <img src="${p.image_url}" loading="lazy" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500">
+                <div class="absolute top-2 right-2 px-3 py-1 bg-cyan-500 text-black rounded-full text-xs font-black">$${p.price}</div>
+            </div>
+            <div class="p-4">
+                <h3 class="font-bold text-sm text-white group-hover:text-cyan-400 transition-colors">${p.title}</h3>
+                <div class="flex justify-between items-center mt-2 text-[10px] text-gray-500 uppercase">
+                    <span>${p.specialty}</span>
+                    <span class="text-cyan-400"><i class="fas fa-sync"></i> ${calculateFreshness(p.last_updated)}</span>
                 </div>
-            `).join('');
-        }
+            </div>
+        </div>
+    `).join('');
+}
 
-        // ALGORITMO DE FRESHNESS (7 DÍAS)
-        function calculateFreshness(date) {
-            const lastUpdate = new Date(date);
-            const now = new Date();
-            const diffDays = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
-            
-            if (diffDays < 7) return `Actualizado hace ${diffDays}d`;
-            return `⚠️ Pendiente de Sincronización`;
-        }
+// 3. EL ALGORITMO DE FRESHNESS (Sigue igual, pero ahora usa la fecha real de SQL)
+function calculateFreshness(dateString) {
+    if (!dateString) return "Sincronización N/A";
+    
+    const lastUpdate = new Date(dateString);
+    const now = new Date();
+    const diffDays = Math.floor((now - lastUpdate) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0) return "Sincronizado ahora"; // Para evitar errores de zona horaria
+    if (diffDays < 7) return `Actualizado hace ${diffDays}d`;
+    return `⚠️ Pendiente de Sincronización`;
+
+}
 
         async function openModal(id) {
             const p = inventory.find(x => x.id === id);
@@ -297,8 +315,9 @@ fa-copy"></i></button>
             setTimeout(() => { toast.classList.add('translate-y-20', 'opacity-0'); }, 3000);
         }
 
-        window.onload = initInventory;
-    </script>
+        window.onload = () => {
+            initInventory(); //ahora esto llama a Supabase
+        };
+ </script>
 </body>
 </html>
-
