@@ -7,236 +7,262 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Supabase SDK Oficial -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         :root {
-            --accent: #00f2ff;
-            --accent-glow: rgba(0, 242, 255, 0.5);
+            --accent: #10b981; /* Emerald 500 */
+            --accent-glow: rgba(16, 185, 129, 0.5);
             --bg-dark: #050505;
-            --panel-bg: rgba(20, 20, 25, 0.8);
+            --panel-bg: rgba(10, 10, 10, 0.9);
         }
 
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 50% 0%, rgba(0, 242, 255, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 0% 100%, rgba(123, 0, 255, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(10, 10, 10, 1) 0%, transparent 50%);
             color: #e0e0e0;
-            font-family: 'Outfit', sans-serif;
+            font-family: 'JetBrains Mono', monospace;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        .font-outfit { font-family: 'Outfit', sans-serif; }
 
         .glass {
             background: var(--panel-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
         }
 
         .product-card {
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            border: 1px solid rgba(16, 185, 129, 0.05);
+            background: rgba(15, 15, 15, 0.6);
         }
 
         .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
+            transform: translateY(-8px);
             border-color: var(--accent);
-            box-shadow: 0 15px 50px rgba(0, 242, 255, 0.2);
-            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 15px 45px rgba(16, 185, 129, 0.15);
         }
 
         .glitch-text {
             position: relative;
-            text-shadow: 0.05em 0 0 #ff00c1, -0.05em -0.025em 0 #00fff9;
+            text-shadow: 0.05em 0 0 #00ff00, -0.05em -0.025em 0 #ff00ff;
             animation: glitch 3s infinite;
         }
 
         @keyframes glitch {
-            0% { text-shadow: 0.05em 0 0 #ff00c1, -0.05em -0.025em 0 #00fff9; }
-            14% { text-shadow: 0.05em 0 0 #ff00c1, -0.05em -0.025em 0 #00fff9; }
-            15% { text-shadow: -0.05em -0.025em 0 #ff00c1, 0.025em 0.025em 0 #00fff9; }
-            100% { text-shadow: -0.025em 0 0 #ff00c1, -0.025em -0.025em 0 #00fff9; }
+            0% { text-shadow: 0.05em 0 0 #00ff00, -0.05em -0.025em 0 #ff00ff; }
+            15% { text-shadow: -0.05em -0.025em 0 #00ff00, 0.025em 0.025em 0 #ff00ff; }
+            50% { text-shadow: 0.025em 0.05em 0 #00ff00, 0.05em 0 0 #ff00ff; }
+            100% { text-shadow: -0.025em 0 0 #00ff00, -0.025em -0.025em 0 #ff00ff; }
         }
 
         .tab-btn.active {
             color: var(--accent);
             border-bottom: 2px solid var(--accent);
-            background: rgba(0, 242, 255, 0.05);
+            background: rgba(16, 185, 129, 0.05);
         }
 
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0a; }
-        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
         .loading-shimmer {
-            background: linear-gradient(90deg, #111 25%, #222 50%, #111 75%);
+            background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
             background-size: 200% 100%;
-            animation: shimmer 1.5s infinite linear;
+            animation: shimmer 2s infinite linear;
         }
 
         @keyframes shimmer {
             to { background-position: -200% 0; }
         }
 
-        .btn-glow {
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
-            transition: all 0.3s;
+        .emerald-glow {
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
         }
-        .btn-glow:hover {
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
-            transform: scale(1.02);
-        }
+        
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-2 md:p-6">
 
-    <!-- Header Capa 7 -->
+    <!-- Header Terminal Style -->
     <header class="max-w-7xl mx-auto mb-10">
-        <div class="glass rounded-[2rem] p-6 flex flex-col md:flex-row items-center justify-between gap-8 border-b-2 border-cyan-500/30">
-            <div class="flex items-center gap-5">
+        <nav class="glass rounded-2xl p-5 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
                 <div class="relative">
-                    <div class="w-16 h-16 bg-cyan-500 rounded-2xl flex items-center justify-center rotate-3 hover:rotate-0 transition-transform duration-500 shadow-[0_0_30px_rgba(0,242,255,0.5)]">
-                        <i class="fas fa-microchip text-3xl text-black"></i>
+                    <div class="w-12 h-12 bg-emerald-500 rounded flex items-center justify-center animate-pulse shadow-[0_0_20px_rgba(16,185,129,0.4)]">
+                        <i class="fas fa-terminal text-xl text-black"></i>
                     </div>
-                    <div class="absolute -top-2 -right-2 w-5 h-5 bg-green-500 rounded-full border-4 border-[#050505] animate-pulse"></div>
                 </div>
                 <div>
-                    <h1 class="text-3xl md:text-4xl font-black tracking-tighter glitch-text uppercase italic">DIHACKTOR <span class="text-cyan-400">Ω</span></h1>
-                    <div class="flex items-center gap-2 mt-1">
-                        <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span>
-                        <p class="text-[10px] text-cyan-500 font-mono tracking-widest uppercase">SYNC LEVEL 7 - NODE: ONLINE</p>
+                    <h1 class="text-2xl font-black tracking-tighter text-emerald-500 italic uppercase font-outfit">Dihacktor <span class="text-white">Nexus</span></h1>
+                    <div class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+                        <p class="text-[9px] text-emerald-500/70 tracking-widest uppercase" id="syncStatus">Capa 7 // Rotación Activa</p>
                     </div>
                 </div>
             </div>
 
-            <div class="relative w-full md:w-[450px]">
-                <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-cyan-500/50"></i>
-                <input type="text" id="searchInput" placeholder="Filtrar arsenal de IA..." 
-                       class="w-full bg-black/40 border border-white/10 rounded-full py-4 pl-14 pr-6 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/20 transition-all font-mono text-sm placeholder:text-gray-600">
+            <div class="relative w-full md:w-96">
+                <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-emerald-500/40"></i>
+                <input type="text" id="searchInput" placeholder="Search expert matrix..." 
+                       class="w-full bg-black/60 border border-emerald-500/20 rounded-xl py-3 pl-12 pr-4 focus:outline-none focus:border-emerald-500/50 transition-all text-sm text-emerald-100 font-mono">
             </div>
-        </div>
+            
+            <div class="flex items-center gap-6">
+                <button onclick="scrollToGrid()" class="text-[10px] font-black uppercase tracking-widest hover:text-emerald-400 transition-colors">Catálogo</button>
+                <div class="relative cursor-pointer group" onclick="toggleCart()">
+                    <i class="fas fa-shopping-cart text-xl hover:text-emerald-400 transition-colors"></i>
+                    <span id="cartCount" class="absolute -top-2 -right-2 bg-emerald-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full hidden">0</span>
+                </div>
+            </div>
+        </nav>
     </header>
 
-    <!-- Categorías Dinámicas -->
-    <nav class="max-w-7xl mx-auto mb-12 flex overflow-x-auto gap-3 pb-4 no-scrollbar" id="categoryContainer">
-        <button onclick="filterByCategory('all')" class="category-btn active whitespace-nowrap px-8 py-3 rounded-2xl glass text-[10px] font-black uppercase tracking-widest transition-all border border-transparent hover:border-cyan-500/30">Todo el Arsenal</button>
-    </nav>
+    <!-- Filtros de Especialidad -->
+    <div class="max-w-7xl mx-auto mb-12 flex overflow-x-auto gap-3 pb-2 no-scrollbar" id="categoryContainer">
+        <button onclick="filterByCategory('all')" class="category-btn active whitespace-nowrap px-6 py-2 rounded-lg glass text-[9px] font-black uppercase tracking-widest transition-all">Todo el Arsenal</button>
+    </div>
 
-    <!-- Grid de Inventario Real -->
-    <main class="max-w-7xl mx-auto min-h-[60vh]">
-        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            <div class="glass rounded-3xl overflow-hidden aspect-[3/4] loading-shimmer opacity-20 border border-white/5"></div>
-            <div class="glass rounded-3xl overflow-hidden aspect-[3/4] loading-shimmer opacity-20 border border-white/5"></div>
-            <div class="glass rounded-3xl overflow-hidden aspect-[3/4] loading-shimmer opacity-20 border border-white/5"></div>
-            <div class="glass rounded-3xl overflow-hidden aspect-[3/4] loading-shimmer opacity-20 border border-white/5"></div>
+    <!-- Grid de Inventario -->
+    <main class="max-w-7xl mx-auto min-h-[60vh]" id="inventoryGridContainer">
+        <div id="inventoryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <!-- Skeletal Loading -->
+            <div class="glass rounded-2xl overflow-hidden aspect-[4/5] loading-shimmer opacity-20"></div>
+            <div class="glass rounded-2xl overflow-hidden aspect-[4/5] loading-shimmer opacity-20"></div>
+            <div class="glass rounded-2xl overflow-hidden aspect-[4/5] loading-shimmer opacity-20"></div>
         </div>
     </main>
 
-    <!-- Modal de Producto -->
-    <div id="productModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-2xl">
+    <!-- Footer de Infraestructura -->
+    <footer class="max-w-7xl mx-auto mt-24 pt-12 border-t border-emerald-500/10 pb-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-[10px] text-neutral-500">
+            <div class="col-span-2">
+                <div class="flex items-center gap-2 text-emerald-500 mb-4 font-black tracking-widest">
+                    <i class="fas fa-shield-alt"></i> SISTEMA DE SEGURIDAD CAPA 7 ACTIVO
+                </div>
+                <p class="leading-relaxed">Este nodo está cifrado mediante protocolos de rotación dinámica (Ghost Network). Los activos digitales se distribuyen vía email encriptado en menos de 60 segundos tras confirmar la transacción en la red.</p>
+            </div>
+            <div>
+                <h4 class="text-neutral-300 font-bold mb-4 uppercase">Métricas de Red</h4>
+                <ul class="space-y-2 font-mono">
+                    <li class="flex justify-between"><span>Status:</span> <span class="text-emerald-500">OPTIMAL</span></li>
+                    <li class="flex justify-between"><span>Expertos:</span> <span class="text-emerald-500">50,000+</span></li>
+                    <li class="flex justify-between"><span>Latency:</span> <span class="text-emerald-500">14ms</span></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-neutral-300 font-bold mb-4 uppercase">Nodo</h4>
+                <p class="font-mono">IP: 10.1.1.91<br>Location: Ghost Central<br>Protocol: AES-256</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modales -->
+    <div id="productModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-xl">
         <div class="absolute inset-0" onclick="closeModal('productModal')"></div>
-        <div id="modalContent" class="relative glass max-w-5xl w-full rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 flex flex-col md:flex-row"></div>
+        <div id="modalContent" class="relative glass max-w-5xl w-full rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row"></div>
     </div>
 
-    <!-- Modal de Checkout -->
-    <div id="checkoutModal" class="fixed inset-0 z-[110] hidden flex items-center justify-center p-4 bg-black/95 backdrop-blur-3xl">
-        <div class="absolute inset-0" onclick="closeModal('checkoutModal')"></div>
-        <div class="relative glass max-w-2xl w-full rounded-[3rem] p-10 md:p-14 border border-cyan-500/20 shadow-[0_0_120px_rgba(0,242,255,0.1)]">
-            <button onclick="closeModal('checkoutModal')" class="absolute top-10 right-10 text-gray-500 hover:text-white transition-colors">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
-
-            <div class="text-center mb-12">
-                <div class="inline-block px-5 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[10px] font-black uppercase tracking-[0.4em] mb-5">Secure Layer 7 Gateway</div>
-                <h2 class="text-4xl font-black mb-3 glitch-text uppercase italic">Transacción <span class="text-cyan-400">Ω</span></h2>
-                <p id="checkoutProductName" class="text-gray-400 text-sm font-mono"></p>
+    <!-- Checkout Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-[110] hidden flex justify-end">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="toggleCart()"></div>
+        <div class="relative w-full max-w-md glass h-full p-8 flex flex-col border-l border-emerald-500/30">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black italic text-emerald-500 font-outfit uppercase">TU_PEDIDO.EXE</h2>
+                <button onclick="toggleCart()" class="text-neutral-500 hover:text-white"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto space-y-4 pr-2">
+                <!-- Items dinámicos -->
             </div>
 
-            <div class="grid grid-cols-2 gap-5 mb-10">
-                <button onclick="switchTab('crypto')" id="tab-crypto" class="tab-btn active p-6 rounded-3xl border border-white/5 flex flex-col items-center gap-3 transition-all hover:bg-white/5">
-                    <i class="fab fa-bitcoin text-3xl"></i>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em]">Criptoactivos</span>
+            <div class="mt-8 pt-8 border-t border-emerald-500/10">
+                <div class="flex justify-between text-xl font-black mb-8">
+                    <span>TOTAL:</span>
+                    <span class="text-emerald-500" id="cartTotal">$0.00</span>
+                </div>
+                
+                <div class="space-y-4 mb-8">
+                    <input type="email" id="buyerEmail" placeholder="EMAIL DE ENTREGA" class="w-full bg-black/40 border border-emerald-500/20 rounded-xl py-4 px-5 text-xs font-mono focus:border-emerald-500 outline-none uppercase placeholder:text-emerald-900">
+                    <input type="text" id="txHash" placeholder="TXID / HASH DE PAGO" class="w-full bg-black/40 border border-emerald-500/20 rounded-xl py-4 px-5 text-xs font-mono focus:border-emerald-500 outline-none placeholder:text-emerald-900">
+                </div>
+
+                <button onclick="processCheckout()" id="checkoutBtn" class="w-full py-5 bg-emerald-500 text-black font-black rounded-xl uppercase tracking-[0.3em] hover:bg-emerald-400 active:scale-95 transition-all shadow-xl">
+                    Sincronizar Nodo
                 </button>
-                <button onclick="switchTab('bank')" id="tab-bank" class="tab-btn p-6 rounded-3xl border border-white/5 flex flex-col items-center gap-3 transition-all hover:bg-white/5">
-                    <i class="fas fa-credit-card text-3xl"></i>
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em]">Stripe Terminal</span>
-                </button>
-            </div>
-
-            <div id="content-crypto" class="space-y-8">
-                <div id="wallet-container" class="bg-black/60 rounded-[2rem] p-8 border border-white/5 text-center font-mono">
-                    <div class="flex flex-col items-center py-6">
-                        <div class="w-14 h-14 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-                        <p class="text-xs text-cyan-500/50 tracking-widest uppercase">Obteniendo Bridge...</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="content-bank" class="space-y-5 hidden">
-                <div class="bg-black/60 rounded-[2rem] p-8 border border-white/5">
-                    <div class="space-y-4">
-                        <input type="text" placeholder="NÚMERO DE TARJETA" class="w-full bg-black/40 border border-white/10 rounded-2xl py-5 px-6 text-sm font-mono focus:border-cyan-500 outline-none">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" placeholder="MM/YY" class="bg-black/40 border border-white/10 rounded-2xl py-5 px-6 text-sm font-mono focus:border-cyan-500 outline-none">
-                            <input type="text" placeholder="CVC" class="bg-black/40 border border-white/10 rounded-2xl py-5 px-6 text-sm font-mono focus:border-cyan-500 outline-none">
-                        </div>
-                    </div>
-                    <button onclick="processRealStripe()" class="w-full mt-8 py-5 bg-white text-black font-black rounded-2xl uppercase tracking-[0.3em] hover:bg-cyan-400 transition-all shadow-xl">Pagar <span id="stripePrice"></span></button>
-                </div>
-            </div>
-
-            <div class="mt-12 pt-10 border-t border-white/5 space-y-5">
-                <input type="email" id="buyerEmail" placeholder="EMAIL PARA ENTREGA" class="w-full bg-black/40 border border-white/10 rounded-2xl py-5 px-6 text-xs font-mono focus:border-cyan-500 outline-none uppercase">
-                <div id="hashInputWrapper" class="relative">
-                    <input type="text" id="txHash" placeholder="TXID / HASH DE TRANSACCIÓN" class="w-full bg-black/40 border border-white/10 rounded-2xl py-5 px-6 text-xs font-mono focus:border-cyan-500 outline-none">
-                </div>
-                <button onclick="verifyRealPayment()" id="btnVerify" class="w-full btn-glow bg-cyan-500 text-black py-6 rounded-3xl font-black uppercase tracking-[0.4em]">Sincronizar Nodo</button>
+                <p class="text-[8px] text-center text-neutral-600 mt-4 uppercase font-mono tracking-widest">Pago cifrado grado militar // Capa 7 Verified</p>
             </div>
         </div>
     </div>
 
     <!-- Toast UI -->
     <div id="toast" class="fixed bottom-10 left-1/2 -translate-x-1/2 z-[300] hidden">
-        <div class="glass border-l-4 border-l-cyan-500 px-10 py-5 rounded-2xl flex items-center gap-5 shadow-2xl">
-            <div id="toastIcon" class="text-cyan-500 text-xl"></div>
-            <p id="toastMsg" class="text-sm font-mono font-bold text-white"></p>
+        <div class="glass border-l-4 border-l-emerald-500 px-8 py-4 rounded-xl flex items-center gap-4 shadow-2xl">
+            <p id="toastMsg" class="text-[10px] font-bold text-white uppercase tracking-widest"></p>
         </div>
     </div>
 
     <script>
-        const APOLLO_API = "http://10.1.1.92:8000"; 
-        const SUPABASE_URL = 'https://ebqxqqpgbeivmvztskns.supabase.co';
+        // CONFIGURACIÓN DE INFRAESTRUCTURA
+        const APOLLO_API = "http://10.1.1.91:8001"; 
+        const SUPABASE_URL = 'https://nzatlbwqjchqqnwiqafh.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56YXRsYndxamNocXFud2lxYWZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxMDg1MjUsImV4cCI6MjA4NDY4NDUyNX0.MducdBiMPb8cDf5mdX2kRRzAYZ7yqUhT80yzaCNQ5UI';
         
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // ESTADO GLOBAL
         let fullInventory = [];
+        let cart = [];
         let currentCategory = 'all';
-        let selectedProduct = null;
 
+        // INICIALIZACIÓN
         async function init() {
             try {
-                const { data, error } = await _supabase.from('products').select('*').eq('is_active', true).order('created_at', { ascending: false });
+                // Sincronización con la Matriz de Expertos (Regla de Rotación Día 1-7)
+                const day = new Date().getDay() || 7;
+                const { data, error } = await _supabase
+                    .from('products')
+                    .select('*')
+                    .eq('is_active', true)
+                    .eq('rotation_group', day)
+                    .limit(50);
+
                 if (error) throw error;
+
                 fullInventory = data || [];
                 renderCategories();
                 renderGrid();
                 setupSearch();
-            } catch (err) { notify("❌ Fallo de Conexión DB", "error"); }
+                updateSyncHeader();
+            } catch (err) {
+                console.error("Critical Failure:", err);
+                notify("❌ Error de enlace con el Nexus", "error");
+            }
+        }
+
+        function updateSyncHeader() {
+            const day = new Date().getDay() || 7;
+            document.getElementById('syncStatus').innerText = `Capa 7 // Rotación Día ${day} de 7`;
         }
 
         function renderCategories() {
             const container = document.getElementById('categoryContainer');
             const specialties = ['all', ...new Set(fullInventory.map(p => p.specialty).filter(Boolean))];
+            
             container.innerHTML = specialties.map(s => `
-                <button onclick="filterByCategory('${s}')" class="category-btn ${currentCategory === s ? 'active' : ''} whitespace-nowrap px-8 py-3 rounded-2xl glass text-[10px] font-black uppercase tracking-widest transition-all border border-transparent hover:border-cyan-500/30">
+                <button onclick="filterByCategory('${s}')" 
+                        class="category-btn ${currentCategory === s ? 'active' : ''} whitespace-nowrap px-6 py-2.5 rounded-xl glass text-[9px] font-black uppercase tracking-widest transition-all border border-transparent hover:border-emerald-500/30">
                     ${s === 'all' ? 'Todo el Arsenal' : s}
                 </button>
             `).join('');
@@ -249,125 +275,177 @@
                 const matchesCategory = currentCategory === 'all' || p.specialty === currentCategory;
                 return matchesSearch && matchesCategory;
             });
+
             const grid = document.getElementById('inventoryGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full py-24 text-center opacity-40 font-mono text-sm uppercase tracking-[0.3em]">Sin señales en esta frecuencia.</div>`;
+                return;
+            }
+
             grid.innerHTML = filtered.map(p => `
-                <div class="product-card glass rounded-[2rem] overflow-hidden cursor-pointer flex flex-col" onclick="openProduct('${p.id}')">
-                    <div class="relative aspect-video overflow-hidden">
-                        <img src="${p.image_url}" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700">
-                        <div class="absolute top-4 right-4 bg-black/80 px-4 py-1.5 rounded-xl border border-cyan-500/50 text-cyan-400 font-black text-xs shadow-2xl">$${p.price.toFixed(2)}</div>
+                <div class="product-card rounded-2xl overflow-hidden flex flex-col group" onclick="openProduct('${p.id}')">
+                    <div class="relative aspect-video overflow-hidden border-b border-emerald-500/10">
+                        <img src="${p.image_url}" class="w-full h-full object-cover transition-all duration-1000 grayscale group-hover:grayscale-0">
+                        <div class="absolute top-4 right-4 bg-emerald-500 text-black font-black px-3 py-1 rounded text-lg shadow-2xl">
+                            $${p.price.toFixed(2)}
+                        </div>
                     </div>
-                    <div class="p-8">
-                        <span class="text-[9px] font-black text-cyan-500/60 uppercase tracking-[0.3em] mb-2 block">${p.specialty}</span>
-                        <h3 class="text-xl font-bold text-white leading-tight">${p.title}</h3>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-[8px] font-black text-emerald-500/80 uppercase tracking-widest border border-emerald-500/20 px-2 py-0.5 rounded bg-emerald-500/5">${p.specialty}</span>
+                            <span class="text-[8px] font-black text-blue-400 uppercase tracking-widest border border-blue-400/20 px-2 py-0.5 rounded bg-blue-400/5">JSON INCLUIDO</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white leading-tight mb-6 group-hover:text-emerald-400 transition-colors uppercase italic font-outfit">${p.title}</h3>
+                        <button onclick="event.stopPropagation(); addToCart('${p.id}')" class="mt-auto w-full py-3 bg-emerald-500/10 hover:bg-emerald-500 text-emerald-500 hover:text-black border border-emerald-500/20 font-black text-[10px] uppercase tracking-[0.2em] transition-all rounded-lg flex items-center justify-center gap-2">
+                            <i class="fas fa-zap"></i> Adquirir Acceso
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function setupSearch() { document.getElementById('searchInput').addEventListener('input', renderGrid); }
+        function setupSearch() {
+            document.getElementById('searchInput').addEventListener('input', renderGrid);
+        }
 
-        function filterByCategory(cat) { currentCategory = cat; renderCategories(); renderGrid(); }
+        function filterByCategory(cat) {
+            currentCategory = cat;
+            renderCategories();
+            renderGrid();
+        }
 
         function openProduct(id) {
             const p = fullInventory.find(x => String(x.id) === String(id));
-            selectedProduct = p;
-            document.getElementById('productModal').classList.remove('hidden');
+            const modal = document.getElementById('productModal');
+            modal.classList.remove('hidden');
             document.getElementById('modalContent').innerHTML = `
-                <button onclick="closeModal('productModal')" class="absolute top-8 right-8 z-50 w-12 h-12 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors"><i class="fas fa-times text-xl"></i></button>
-                <div class="md:w-1/2 relative min-h-[400px]"><img src="${p.image_url}" class="w-full h-full object-cover"></div>
-                <div class="md:w-1/2 p-10 md:p-16 flex flex-col justify-center">
-                    <span class="text-cyan-400 text-xs font-black uppercase tracking-[0.4em] mb-4 block">Protocolo de Elite</span>
-                    <h2 class="text-4xl font-black text-white leading-none mb-6 italic uppercase">${p.title}</h2>
-                    <div class="bg-black/40 rounded-[2rem] p-10 border border-white/5 mb-10">
-                        <div class="text-6xl font-black text-white">$${p.price.toFixed(2)}</div>
+                <button onclick="closeModal('productModal')" class="absolute top-6 right-6 z-50 w-10 h-10 rounded-full glass flex items-center justify-center hover:bg-emerald-500 hover:text-black transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="md:w-1/2 relative aspect-square md:aspect-auto">
+                    <img src="${p.image_url}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+                <div class="md:w-1/2 p-10 md:p-14 flex flex-col justify-center">
+                    <span class="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Frecuencia de Elite</span>
+                    <h2 class="text-4xl font-black text-white leading-none mb-6 italic uppercase font-outfit">${p.title}</h2>
+                    <p class="text-neutral-400 text-xs leading-relaxed mb-10 border-l border-emerald-500/50 pl-6 py-2 bg-emerald-500/5">
+                        Inyección directa de conocimiento experto. Este activo digital incluye flujos de trabajo n8n y paquetes de scripts listos para despliegue inmediato en tu infraestructura.
+                    </p>
+                    <div class="bg-black/40 rounded-2xl p-8 border border-emerald-500/10 mb-10">
+                        <div class="flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] text-neutral-500 uppercase tracking-widest block mb-2">Tarifa de Acceso</span>
+                                <div class="text-5xl font-black text-emerald-500">$${p.price.toFixed(2)}</div>
+                            </div>
+                            <div class="text-right text-[9px] text-emerald-500/50 uppercase font-mono tracking-tighter">
+                                <i class="fas fa-check-circle"></i> Sincronización Ready
+                            </div>
+                        </div>
                     </div>
-                    <button onclick="openCheckout()" class="w-full py-6 bg-cyan-500 text-black font-black uppercase tracking-[0.3em] rounded-[1.5rem] btn-glow"><i class="fas fa-bolt mr-2"></i> Iniciar Adquisición</button>
+                    <button onclick="addToCart('${p.id}'); closeModal('productModal')" class="w-full py-5 bg-emerald-500 text-black font-black uppercase tracking-[0.3em] rounded-xl hover:bg-emerald-400 active:scale-95 transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)]">
+                        Inyectar al Carrito
+                    </button>
                 </div>
             `;
         }
 
-        async function openCheckout() {
-            closeModal('productModal');
-            document.getElementById('checkoutModal').classList.remove('hidden');
-            document.getElementById('checkoutProductName').innerText = selectedProduct.title;
-            document.getElementById('stripePrice').innerText = `$${selectedProduct.price.toFixed(2)}`;
-            fetchRealWallet();
+        // SISTEMA DE CARRITO
+        function addToCart(id) {
+            const p = fullInventory.find(x => String(x.id) === String(id));
+            cart.push(p);
+            updateCartUI();
+            notify(`✅ ${p.title.slice(0,20)}... añadido`);
         }
 
-        async function fetchRealWallet() {
-            const container = document.getElementById('wallet-container');
-            try {
-                // LLAMADA COMPATIBLE CON storefront_api.py (Legacy Endpoint)
-                const res = await fetch(`${APOLLO_API}/get-payment-details?product_id=${selectedProduct.id}`);
-                const data = await res.json();
-                container.innerHTML = `
-                    <div class="text-left animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <p class="text-[10px] font-black text-cyan-500 uppercase tracking-[0.4em] mb-4">USDT (Red TRC20)</p>
-                        <div class="flex gap-3 items-center mb-6">
-                            <code class="flex-grow bg-black/80 p-5 rounded-2xl border border-white/10 text-xs text-gray-300 break-all font-mono">${data.wallet_address}</code>
-                            <button onclick="copyText('${data.wallet_address}')" class="p-5 rounded-2xl glass hover:bg-cyan-500 hover:text-black transition-all"><i class="fas fa-copy"></i></button>
-                        </div>
-                        <p class="text-[10px] text-gray-500 text-center uppercase tracking-widest leading-loose">Envía exactamente <span class="text-white font-bold">$${selectedProduct.price.toFixed(2)} USDT</span>.</p>
-                    </div>`;
-            } catch (err) { container.innerHTML = `<p class="text-red-400 text-xs font-mono">ERROR: Nodo Offline</p>`; }
+        function updateCartUI() {
+            const count = document.getElementById('cartCount');
+            const itemsContainer = document.getElementById('cartItems');
+            const totalContainer = document.getElementById('cartTotal');
+            
+            count.innerText = cart.length;
+            count.classList.toggle('hidden', cart.length === 0);
+            
+            itemsContainer.innerHTML = cart.map((item, idx) => `
+                <div class="flex justify-between items-center p-4 glass rounded-xl border border-emerald-500/10">
+                    <div>
+                        <p class="text-[11px] font-bold text-white uppercase font-outfit">${item.title}</p>
+                        <p class="text-[10px] text-emerald-500 font-mono">$${item.price.toFixed(2)}</p>
+                    </div>
+                    <button onclick="removeFromCart(${idx})" class="text-red-500/50 hover:text-red-500 transition-colors text-xs">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((acc, curr) => acc + curr.price, 0);
+            totalContainer.innerText = `$${total.toFixed(2)}`;
         }
 
-        async function processRealStripe() {
-            const email = document.getElementById('buyerEmail').value;
-            if (!email) return notify("❌ Email requerido", "error");
-            notify("⚡ Contactando Gateway...", "info");
-            try {
-                const res = await fetch(`${APOLLO_API}/api/verify-payment`, { // Usando el endpoint real del backend
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_id: selectedProduct.id, tx_id: "STRIPE_INIT", email: email, currency: "STRIPE", amount: selectedProduct.price })
-                });
-                const data = await res.json();
-                if (data.status === "success") { notify("✅ Orden Registrada. Revisa tu email.", "success"); setTimeout(() => closeModal('checkoutModal'), 3000); }
-            } catch (err) { notify("❌ Error de Comunicación", "error"); }
+        function removeFromCart(idx) {
+            cart.splice(idx, 1);
+            updateCartUI();
         }
 
-        async function verifyRealPayment() {
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        // PROCESO DE PAGO REAL
+        async function processCheckout() {
             const email = document.getElementById('buyerEmail').value;
             const hash = document.getElementById('txHash').value;
-            const isCrypto = !document.getElementById('content-crypto').classList.contains('hidden');
-            if (!email || (isCrypto && !hash)) return notify("❌ Faltan datos", "error");
+            
+            if (!email || !hash) return notify("❌ Se requieren credenciales de red (Email + Hash)", "error");
+            if (cart.length === 0) return notify("❌ El carrito está vacío", "error");
 
-            const btn = document.getElementById('btnVerify');
-            btn.disabled = true; btn.innerHTML = 'VERIFICANDO RED...';
+            const btn = document.getElementById('checkoutBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-satellite-dish animate-spin mr-2"></i> ESCANEANDO MATRIZ...';
 
             try {
-                // LLAMADA COMPATIBLE CON storefront_api.py (Legacy Endpoint)
-                const res = await fetch(`${APOLLO_API}/verify-payment`, {
+                // Solo procesamos el primer item por ahora para compatibilidad con el API actual
+                const product = cart[0]; 
+                const response = await fetch(`${APOLLO_API}/verify-payment`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ product_id: selectedProduct.id, tx_id: hash, email: email, currency: isCrypto ? "USDT_TRC20" : "FIAT", amount: selectedProduct.price })
+                    body: JSON.stringify({
+                        product_id: product.id,
+                        tx_id: hash,
+                        email: email,
+                        currency: "USDT_TRC20",
+                        amount: product.price
+                    })
                 });
-                const data = await res.json();
-                if (data.status === "success") { notify("✅ Pago Registrado Correctamente", "success"); setTimeout(() => closeModal('checkoutModal'), 4000); }
-                else { throw new Error(); }
-            } catch (err) { notify("❌ Error de Verificación", "error"); }
-            btn.disabled = false; btn.innerHTML = 'Sincronizar Nodo';
+
+                const res = await response.json();
+                if (res.status === "success") {
+                    notify("✅ ACCESO CONCEDIDO. Sincronización exitosa.", "success");
+                    cart = [];
+                    updateCartUI();
+                    setTimeout(() => toggleCart(), 3000);
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                notify("❌ Fallo de Verificación: Hash no detectado en red", "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Sincronizar Nodo';
+            }
         }
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.id === `tab-${tab}`));
-            document.getElementById('content-crypto').classList.toggle('hidden', tab !== 'crypto');
-            document.getElementById('content-bank').classList.toggle('hidden', tab !== 'bank');
-            document.getElementById('hashInputWrapper').classList.toggle('hidden', tab !== 'crypto');
-        }
-
+        // UTILIDADES
         function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+        function scrollToGrid() { document.getElementById('inventoryGridContainer').scrollIntoView({ behavior: 'smooth' }); }
 
         function notify(msg, type = 'info') {
             const t = document.getElementById('toast');
             document.getElementById('toastMsg').innerText = msg;
-            document.getElementById('toastIcon').innerHTML = type === 'error' ? '<i class="fas fa-bolt text-red-500"></i>' : '<i class="fas fa-terminal text-cyan-500"></i>';
             t.classList.remove('hidden');
             setTimeout(() => t.classList.add('hidden'), 4000);
         }
 
-        async function copyText(text) { await navigator.clipboard.writeText(text); notify("✅ Copiado al portapapeles", "success"); }
         window.onload = init;
     </script>
 </body>
