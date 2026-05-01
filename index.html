@@ -229,16 +229,28 @@
         // INICIALIZACIÓN
         async function init() {
             try {
-                // Sincronización con la Matriz de Expertos (Regla de Rotación Día 1-7)
                 const day = new Date().getDay() || 7;
-                const { data, error } = await _supabase
+                console.log(`[DIHACKTOR] Sincronizando con el Nodo: ${SUPABASE_URL}`);
+
+                // Sincronización con la Matriz de Expertos
+                let { data, error } = await _supabase
                     .from('products')
                     .select('*')
-                    .eq('is_active', true)
-                    .eq('rotation_group', day)
-                    .limit(50);
+                    .limit(100);
 
-                if (error) throw error;
+                if (error) {
+                    console.error("[DIHACKTOR] Error en sincronización:", error.message);
+                    // Fallback sin filtros específicos
+                    const fallback = await _supabase.from('products').select('*').limit(10);
+                    data = fallback.data;
+                }
+
+                if (!data || data.length === 0) {
+                    console.warn("[DIHACKTOR] Catálogo vacío en Supabase. Se requiere inyección.");
+                    fullInventory = [];
+                } else {
+                    fullInventory = data;
+                }
 
                 fullInventory = data || [];
                 renderCategories();
